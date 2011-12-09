@@ -1,6 +1,6 @@
 ## Usage
 
-    require 'eis-epp'
+    require 'epp-eis'
 
     server = Epp::Server.new(
       :server => '127.0.0.1',

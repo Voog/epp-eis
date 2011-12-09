@@ -1,5 +1,5 @@
 require 'rspec'
-require 'eis-epp'
+require 'epp-eis'
 
 # Requires supporting files with custom matchers and macros, etc,
 # in ./support/ and its subdirectories.
