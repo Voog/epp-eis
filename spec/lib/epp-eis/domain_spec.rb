@@ -1,5 +1,25 @@
 require 'spec_helper'
 
+describe 'renew_domain' do
+  before(:each) do
+    @server = Epp::Server.new(:server => '127.0.0.1', :tag => 'username', :password => 'password')
+  end
+  
+  context 'when response is successful' do
+    before(:each) do
+      @server.stub(:request).and_return(xml_mock('renew_domain_1000.xml'))
+    end
+    
+    it 'returns domain name' do
+      @server.renew_domain('testing.ee', '2011-02-15').domain_name.should == 'testing.ee'
+    end
+    
+    it 'returns next expire date' do
+      @server.renew_domain('testing.ee', '2011-02-15').domain_expire_date.should == '2012-02-15'
+    end
+  end
+end
+
 describe 'check_domain' do
   
   before(:each) do

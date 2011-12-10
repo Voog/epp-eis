@@ -3,6 +3,28 @@ module Epp
     
     XML_NS_DOMAIN = 'http://www.nic.cz/xml/epp/domain-1.4'
 
+    class DomainRenewResponse
+      def initialize(response)
+        @response = Nokogiri::XML(response)
+      end
+      
+      def code
+        @response.css('epp response result').first['code'].to_i
+      end
+
+      def message
+        @response.css('epp response result msg').text
+      end
+      
+      def domain_name
+        @response.css('domain|renData domain|name', 'domain' => XML_NS_DOMAIN).text
+      end
+      
+      def domain_expire_date
+        @response.css('domain|renData domain|exDate', 'domain' => XML_NS_DOMAIN).text
+      end
+    end
+
     class DomainCheck
       attr_accessor :name, :available, :reason
 
@@ -53,7 +75,28 @@ module Epp
       def info_domain(domain)
       end
       
-      def renew_domain
+      # Updates domain expiration period for another year.
+      #
+      # domain                - Domain to be renewed
+      # current_expire_date   - Current expiration date of the domain in YYYY-MM-DD format
+      #
+      # Returns DomainRenewResponse object with server response information
+      def renew_domain(domain, current_expire_date)
+        builder = build_epp_request do |xml|
+          xml.command {
+            xml.renew {
+              xml.renew('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => 'http://www.nic.cz/xml/epp/domain-1.4.xsd') {
+                xml.parent.namespace = xml.parent.namespace_definitions.first
+                xml.name domain
+                xml.curExpDate current_expire_date
+                xml.period '1', 'unit' => period_unit
+              }
+            }
+            xml.clTRID UUIDTools::UUID.timestamp_create.to_s
+          }
+        end
+        
+        DomainRenewResponse.new(request(builder.to_xml))
       end
       
       def transfer_domain
@@ -66,6 +109,8 @@ module Epp
       end
 
       # Check availability for a domain or a list of domains.
+      #
+      # Returns DomainCheckResponse object with server response information
       def check_domain(*domains)
         builder = build_epp_request do |xml|
           xml.command {
