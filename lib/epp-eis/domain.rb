@@ -3,6 +3,64 @@ module Epp
     
     XML_NS_DOMAIN = 'http://www.nic.cz/xml/epp/domain-1.4'
 
+    class DomainInfoResponse
+      def initialize(response)
+        @response = Nokogiri::XML(response)
+      end
+      
+      def code
+        @response.css('epp response result').first['code'].to_i
+      end
+
+      def message
+        @response.css('epp response result msg').text
+      end
+      
+      def domain_name
+        @response.css('domain|infData domain|name', 'domain' => XML_NS_DOMAIN).text
+      end
+
+      def domain_roid
+        @response.css('domain|infData domain|roid', 'domain' => XML_NS_DOMAIN).text
+      end
+
+      def domain_status
+        @response.css('domain|infData domain|status', 'domain' => XML_NS_DOMAIN).text
+      end
+      
+      def domain_registrant
+        @response.css('domain|infData domain|registrant', 'domain' => XML_NS_DOMAIN).text
+      end
+      
+      def domain_admin
+        @response.css('domain|infData domain|admin', 'domain' => XML_NS_DOMAIN).text
+      end
+      
+      def domain_nsset
+        @response.css('domain|infData domain|nsset', 'domain' => XML_NS_DOMAIN).text
+      end
+      
+      def domain_clid
+        @response.css('domain|infData domain|clID', 'domain' => XML_NS_DOMAIN).text
+      end
+      
+      def domain_crid
+        @response.css('domain|infData domain|crID', 'domain' => XML_NS_DOMAIN).text
+      end
+      
+      def domain_create_date
+        @response.css('domain|infData domain|crDate', 'domain' => XML_NS_DOMAIN).text
+      end
+      
+      def domain_expire_date
+        @response.css('domain|infData domain|exDate', 'domain' => XML_NS_DOMAIN).text
+      end
+      
+      def domain_authinfo
+        @response.css('domain|infData domain|authInfo', 'domain' => XML_NS_DOMAIN).text
+      end
+    end
+
     class DomainRenewResponse
       def initialize(response)
         @response = Nokogiri::XML(response)
@@ -72,7 +130,27 @@ module Epp
       def delete_domain
       end
       
+      # Will return detailed information about the domain. The information will include domain password field. The field
+      # will be populated with a real value if the domain owner executed the function. Non-owner will see empty domain
+      # password field value.
+      #
+      # domain  - Domain name to be queried
+      #
+      # Returns DomainInfoResponse object
       def info_domain(domain)
+        builder = build_epp_request do |xml|
+          xml.command {
+            xml.renew {
+              xml.renew('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => 'http://www.nic.cz/xml/epp/domain-1.4.xsd') {
+                xml.parent.namespace = xml.parent.namespace_definitions.first
+                xml.name domain
+              }
+            }
+            xml.clTRID UUIDTools::UUID.timestamp_create.to_s
+          }
+        end
+        
+        DomainInfoResponse.new(request(builder.to_xml))
       end
       
       # Updates domain expiration period for another year.
@@ -89,7 +167,7 @@ module Epp
                 xml.parent.namespace = xml.parent.namespace_definitions.first
                 xml.name domain
                 xml.curExpDate current_expire_date
-                xml.period '1', 'unit' => period_unit
+                xml.period '1', 'unit' => 'y'
               }
             }
             xml.clTRID UUIDTools::UUID.timestamp_create.to_s

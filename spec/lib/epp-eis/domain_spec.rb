@@ -1,5 +1,62 @@
 require 'spec_helper'
 
+describe 'info_domain' do
+  before(:each) do
+    @server = Epp::Server.new(:server => '127.0.0.1', :tag => 'username', :password => 'password')
+  end
+  
+  context 'when response is successful' do
+    before(:each) do
+      @server.stub(:request).and_return(xml_mock('info_domain_1000.xml'))
+      @response = @server.info_domain('testing.ee')
+    end
+    
+    it 'returns domain name' do
+      @response.domain_name.should == 'testing.ee'
+    end
+
+    it 'returns domain roid' do
+      @response.domain_roid.should == 'D0000000052-EPP'
+    end
+    
+    it 'returns domain status' do
+      @response.domain_status.should == 'Objekt is without restrictions'
+    end
+    
+    it 'returns domain registrant' do
+      @response.domain_registrant.should == 'MARGUSTEST2'
+    end
+    
+    it 'returns domain admin contact' do
+      @response.domain_admin.should == 'MARGUSTEST3'
+    end
+    
+    it 'returns domain nsset' do
+      @response.domain_nsset.should == 'RACKSPACE1'
+    end
+    
+    it 'returns domain clid' do
+      @response.domain_clid.should == 'margus'
+    end
+
+    it 'returns domain crid' do
+      @response.domain_crid.should == 'margus'
+    end
+    
+    it 'returns domain create date' do
+      @response.domain_create_date.should == '2010-02-15T19:50:00+02:00'
+    end
+    
+    it 'returns domain expire date' do
+      @response.domain_expire_date.should == '2011-02-15'
+    end
+    
+    it 'returns domain password' do
+      @response.domain_authinfo.should == 'b23G6IDH'
+    end
+  end
+end
+
 describe 'renew_domain' do
   before(:each) do
     @server = Epp::Server.new(:server => '127.0.0.1', :tag => 'username', :password => 'password')
