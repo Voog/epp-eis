@@ -1,3 +1,13 @@
+Ruby client for Estonian Internet Foundation registry EPP server.
+
+Under the hood, this gem uses magnificient [EPP server client](https://github.com/ultraspeed/epp) gem by Josh Delsman and Delwyn de Villiers.
+
+## Installation
+
+In Gemfile add it as a gem:
+
+    gem 'epp-eis'
+
 ## Usage
 
     require 'epp-eis'
@@ -10,19 +20,11 @@
       :key => OpenSSL::PKey::RSA.new(File.open('priv_key.pem'))
     )
     
-    server.check_domain('fraktal.ee', 'edicypages.ee')
+    server.is_domain_available?('fraktal.ee') #=> false
     
-    <domain:chkData xmlns:domain="http://www.nic.cz/xml/epp/domain-1.4" xsi:schemaLocation="http://www.nic.cz/xml/epp/domain-1.4 domain-1.4.xsd">
-    <domain:cd>
-      <domain:name avail="0">fraktal.ee</domain:name>
-      <domain:reason>already registered.</domain:reason>
-    </domain:cd>
-    <domain:cd>
-      <domain:name avail="1">edicypages.ee</domain:name>
-    </domain:cd>
-    </domain:chkData>
-
 ## TODO
+
+Need to implement the following commands
 
 * check_contact
 * create_contact
@@ -30,7 +32,6 @@
 * info_contact
 * list_contacts
 * update_contact
-
 * check_nsset
 * create_nsset
 * delete_nsset
@@ -38,11 +39,10 @@
 * list_nssets
 * update_nsset
 * transfer_nsset
-
 * credit_info
 * hello
 
-## Nice to have
+Commands that are nice to have, but not needed.
 
 * check_keyset
 * create_keyset
