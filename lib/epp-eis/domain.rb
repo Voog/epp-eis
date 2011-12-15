@@ -140,8 +140,8 @@ module Epp
       def info_domain(domain)
         builder = build_epp_request do |xml|
           xml.command {
-            xml.renew {
-              xml.renew('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => 'http://www.nic.cz/xml/epp/domain-1.4.xsd') {
+            xml.info {
+              xml.info('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => 'http://www.nic.cz/xml/epp/domain-1.4.xsd') {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
                 xml.name domain
               }
