@@ -21,6 +21,16 @@ module Epp
       end
     end
     
+    class HelloResponse
+      def initialize(response)
+        @response = Nokogiri::XML(response)
+      end
+      
+      def version
+        @response.css('epp greeting svcMenu version').text
+      end
+    end
+    
     module SessionCommands
       
       # Opens session to EPP server, and yields the block given. Wraps login and
@@ -68,6 +78,14 @@ module Epp
         end
         
         return response
+      end
+      
+      def hello
+        builder = build_epp_request do |xml|
+          xml.hello
+        end
+        
+        HelloResponse.new(request(builder.to_xml))
       end
     end
   end

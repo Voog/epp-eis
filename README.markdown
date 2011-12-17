@@ -26,12 +26,6 @@ In Gemfile add it as a gem:
 
 Need to implement the following commands
 
-* check_contact
-* create_contact
-* delete_contact
-* info_contact
-* list_contacts
-* update_contact
 * check_nsset
 * create_nsset
 * delete_nsset
@@ -40,7 +34,6 @@ Need to implement the following commands
 * update_nsset
 * transfer_nsset
 * credit_info
-* hello
 
 Commands that are nice to have, but not needed.
 
