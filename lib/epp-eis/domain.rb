@@ -1,7 +1,49 @@
+require 'base64'
+
 module Epp
   module Eis
     
     XML_NS_DOMAIN = 'http://www.nic.cz/xml/epp/domain-1.4'
+
+    class DomainCreateResponse
+      def initialize(response)
+        @response = Nokogiri::XML(response)
+      end
+      
+      def code
+        @response.css('epp response result').first['code'].to_i
+      end
+
+      def message
+        @response.css('epp response result msg').text
+      end
+      
+      def domain_name
+        @response.css('domain|creData domain|name', 'domain' => XML_NS_DOMAIN).text
+      end
+      
+      def domain_create_date
+        @response.css('domain|creData domain|crDate', 'domain' => XML_NS_DOMAIN).text
+      end
+      
+      def domain_expire_date
+        @response.css('domain|creData domain|exDate', 'domain' => XML_NS_DOMAIN).text
+      end
+    end
+    
+    class DomainDeleteResponse
+      def initialize(response)
+        @response = Nokogiri::XML(response)
+      end
+      
+      def code
+        @response.css('epp response result').first['code'].to_i
+      end
+
+      def message
+        @response.css('epp response result msg').text
+      end
+    end
 
     class DomainInfoResponse
       def initialize(response)
@@ -124,10 +166,70 @@ module Epp
     
     module DomainCommands
       
-      def create_domain(domain, period, nsset, registrant, admin, legal_document)
+      # Create a new domain.
+      #
+      # Domain names with IDN characters õ, ä. ö. ü, š, ž will be allowed. If a domain name contains at least one of
+      # these characters then it must be translated to PUNYCODE before domain create.
+      #
+      # domain          - Domain name to be registered
+      # nsset           - Nameserver id
+      # registrant      - Registrant contact id
+      # admin           - Admin contact id, or array of id-s
+      # legal_document  - Legal document binary data
+      # legal_doc_type  - Legal document type (pdf, ddoc)
+      #
+      # Returns DomainCreateResponse object
+      def create_domain(domain, nsset, registrant, admins, legal_document, legal_doc_type)
+        builder = build_epp_request do |xml|
+          xml.command {
+            xml.create {
+              xml.create('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => 'http://www.nic.cz/xml/epp/domain-1.4.xsd domain-1.4.xsd') {
+                xml.parent.namespace = xml.parent.namespace_definitions.first
+                xml.name domain
+                xml.period '1', 'unit' => 'y'
+                xml.nsset nsset
+                xml.registrant registrant
+                [admins].flatten.each { |admin| xml.admin admin }
+              }
+            }
+            xml.extension {
+              xml.extdata('xmlns:eis' => 'urn:ee:eis:xml:epp:eis-1.0', 'xsi:schemaLocation' => 'urn:ee:eis:xml:epp:eis-1.0 eis-1.0.xsd') {
+                xml.parent.namespace = xml.parent.namespace_definitions.first
+                xml.legalDocument Base64.encode64(legal_document), 'type' => legal_doc_type
+              }
+            }
+          }
+        end
+        
+        DomainCreateResponse.new(request(builder.to_xml))
       end
       
-      def delete_domain
+      # Delete domain.
+      #
+      # domain          - Domain name to be registered
+      # legal_document  - Legal document binary data
+      # legal_doc_type  - Legal document type (pdf, ddoc)
+      #
+      # Returns DomainDeleteResponse object
+      def delete_domain(domain, legal_document, legal_doc_type)
+        builder = build_epp_request do |xml|
+          xml.command {
+            xml.delete {
+              xml.delete('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => 'http://www.nic.cz/xml/epp/domain-1.4.xsd domain-1.4.xsd') {
+                xml.parent.namespace = xml.parent.namespace_definitions.first
+                xml.name domain
+              }
+            }
+            xml.extension {
+              xml.extdata('xmlns:eis' => 'urn:ee:eis:xml:epp:eis-1.0', 'xsi:schemaLocation' => 'urn:ee:eis:xml:epp:eis-1.0 eis-1.0.xsd') {
+                xml.parent.namespace = xml.parent.namespace_definitions.first
+                xml.legalDocument Base64.encode64(legal_document), 'type' => legal_doc_type
+              }
+            }
+          }
+        end
+        
+        DomainDeleteResponse.new(request(builder.to_xml))
       end
       
       # Will return detailed information about the domain. The information will include domain password field. The field

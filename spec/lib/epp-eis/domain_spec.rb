@@ -1,5 +1,51 @@
 require 'spec_helper'
 
+describe 'create_domain' do
+  before(:each) do
+    @server = Epp::Server.new(:server => '127.0.0.1', :tag => 'username', :password => 'password')
+  end
+  
+  context 'when response is successful' do
+    before(:each) do
+      @server.stub(:request).and_return(xml_mock('create_domain_1000.xml'))
+      @response = @server.create_domain('testing.ee', 'name_server_set1', 'domain_registrator1', 'administrative_contact1', legal_mock('test.pdf'), 'pdf')
+    end
+    
+    it 'returns domain name' do
+      @response.domain_name.should == 'testing.ee'
+    end
+    
+    it 'returns domain create date' do
+      @response.domain_create_date.should == '2010-02-15T19:50:00+02:00'
+    end
+    
+    it 'returns domain expire date' do
+      @response.domain_expire_date.should == '2011-02-15'
+    end
+  end
+end
+
+describe 'delete_domain' do
+  before(:each) do
+    @server = Epp::Server.new(:server => '127.0.0.1', :tag => 'username', :password => 'password')
+  end
+  
+  context 'when response is successful' do
+    before(:each) do
+      @server.stub(:request).and_return(xml_mock('delete_domain_1000.xml'))
+      @response = @server.delete_domain('testing.ee', legal_mock('test.pdf'), 'pdf')
+    end
+    
+    it 'returns response code' do
+      @response.code.should == 1000
+    end
+    
+    it 'returns response message' do
+      @response.message.should == 'Command completed successfully'
+    end
+  end
+end
+
 describe 'info_domain' do
   before(:each) do
     @server = Epp::Server.new(:server => '127.0.0.1', :tag => 'username', :password => 'password')
