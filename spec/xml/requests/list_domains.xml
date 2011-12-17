@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<epp xmlns="urn:ietf:params:xml:ns:epp-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd">
+  <extension>
+    <fred:extcommand xmlns:fred="http://www.nic.cz/xml/epp/fred-1.4" xsi:schemaLocation="http://www.nic.cz/xml/epp/fred-1.4 fred-1.4.xsd">
+      <fred:listDomains/>
+      <fred:clTRID>anyp010#10-02-08at14:48:05</fred:clTRID>
+    </fred:extcommand>
+  </extension>
+</epp>

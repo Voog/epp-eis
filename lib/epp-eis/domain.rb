@@ -390,6 +390,7 @@ module Epp
       end
       
       def list_domains
+        list_command('listDomains')
       end
 
       # Check availability for a domain or a list of domains.
