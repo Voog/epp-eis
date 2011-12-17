@@ -58,6 +58,20 @@ module Epp
         @response.css('epp response result msg').text
       end
     end
+    
+    class DomainUpdateResponse
+      def initialize(response)
+        @response = Nokogiri::XML(response)
+      end
+      
+      def code
+        @response.css('epp response result').first['code'].to_i
+      end
+
+      def message
+        @response.css('epp response result msg').text
+      end
+    end
 
     class DomainInfoResponse
       def initialize(response)
@@ -321,7 +335,54 @@ module Epp
         DomainTransferResponse.new(request(builder.to_xml))
       end
       
-      def update_domain
+      # Used to update domain information.
+      #
+      # domain          - Domain name to be updated
+      # add_admins      - Array of admin contact ids to be added. Set to nil or empty array if no changes needed
+      # rem_admins      - Array of admin contact ids to be removed. Set to nil or empty array if no changes needed
+      # nsset           - Domain nsset id to be changed. Set to nil if no changes needed
+      # registrant      - Domain registrant contact id to be changed. Set to nil if no changes needed
+      # auth_info       - Domain authorization code to be changed. Set to nil if no changes needed
+      # legal_document  - Legal document binary data
+      # legal_doc_type  - Legal document type (pdf, ddoc)
+      # 
+      # Returns DomainUpdateResponse object
+      def update_domain(domain, add_admins, rem_admins, nsset, registrant, auth_info, legal_document, legal_doc_type)
+        builder = build_epp_request do |xml|
+          xml.command {
+            xml.update {
+              xml.update('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => 'http://www.nic.cz/xml/epp/domain-1.4.xsd') {
+                xml.parent.namespace = xml.parent.namespace_definitions.first
+                xml.name domain
+                if !add_admins.nil? && !add_admins.empty?
+                  xml.add {
+                    add_admins.each { |add_admin| xml.admin add_admin }
+                  }
+                end
+                if !rem_admins.nil? && !rem_admins.empty?
+                  xml.rem {
+                    rem_admins.each { |rem_admin| xml.admin rem_admin }
+                  }
+                end
+                if [nsset, registrant, auth_info].any?{ |item| !item.nil? }
+                  xml.chg {
+                    xml.nsset nsset if nsset
+                    xml.registrant registrant if registrant
+                    xml.auth_info auth_info if auth_info
+                  }
+                end
+              }
+            }
+            xml.extension {
+              xml.extdata('xmlns:eis' => 'urn:ee:eis:xml:epp:eis-1.0', 'xsi:schemaLocation' => 'urn:ee:eis:xml:epp:eis-1.0 eis-1.0.xsd') {
+                xml.parent.namespace = xml.parent.namespace_definitions.first
+                xml.legalDocument Base64.encode64(legal_document), 'type' => legal_doc_type
+              }
+            }
+          }
+        end
+        
+        DomainUpdateResponse.new(request(builder.to_xml))
       end
       
       def list_domains

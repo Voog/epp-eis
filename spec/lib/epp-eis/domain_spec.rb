@@ -144,6 +144,27 @@ describe 'transfer_domain' do
   end
 end
 
+describe 'update_domain' do
+  before(:each) do
+    @server = Epp::Server.new(:server => '127.0.0.1', :tag => 'username', :password => 'password')
+  end
+  
+  context 'when response is successful' do
+    before(:each) do
+      @server.stub(:request).and_return(xml_mock('responses/update_domain_1000.xml'))
+      @response = @server.update_domain('testimine.ee', nil, nil, nil, nil, nil, legal_mock('test.pdf'), 'pdf')
+    end
+    
+    it 'returns response code' do
+      @response.code.should == 1000
+    end
+    
+    it 'returns response message' do
+      @response.message.should == 'Command completed successfully'
+    end
+  end
+end
+
 describe 'check_domain' do
   
   before(:each) do
