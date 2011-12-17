@@ -45,6 +45,20 @@ module Epp
       end
     end
 
+    class DomainTransferResponse
+      def initialize(response)
+        @response = Nokogiri::XML(response)
+      end
+      
+      def code
+        @response.css('epp response result').first['code'].to_i
+      end
+
+      def message
+        @response.css('epp response result msg').text
+      end
+    end
+
     class DomainInfoResponse
       def initialize(response)
         @response = Nokogiri::XML(response)
@@ -279,7 +293,32 @@ module Epp
         DomainRenewResponse.new(request(builder.to_xml))
       end
       
-      def transfer_domain
+      # Used to transfer domain ownership from one registrar to another.
+      #
+      # domain      - Name of the domain to be transferred
+      # auth_info   - Domain authorization code
+      #
+      # Returns DomainTransferResponse object
+      def transfer_domain(domain, auth_info, legal_document, legal_doc_type)
+        builder = build_epp_request do |xml|
+          xml.command {
+            xml.transfer('op' => 'request') {
+              xml.transfer('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => 'http://www.nic.cz/xml/epp/domain-1.4.xsd') {
+                xml.parent.namespace = xml.parent.namespace_definitions.first
+                xml.name domain
+                xml.authInfo auth_info
+              }
+            }
+            xml.extension {
+              xml.extdata('xmlns:eis' => 'urn:ee:eis:xml:epp:eis-1.0', 'xsi:schemaLocation' => 'urn:ee:eis:xml:epp:eis-1.0 eis-1.0.xsd') {
+                xml.parent.namespace = xml.parent.namespace_definitions.first
+                xml.legalDocument Base64.encode64(legal_document), 'type' => legal_doc_type
+              }
+            }
+          }
+        end
+        
+        DomainTransferResponse.new(request(builder.to_xml))
       end
       
       def update_domain
