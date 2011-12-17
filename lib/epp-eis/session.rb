@@ -1,6 +1,8 @@
 module Epp
   module Eis
     
+    XML_NS_FRED = 'http://www.nic.cz/xml/epp/fred-1.4'
+    
     class GetResultsResponse
       def initialize(response)
         @response = Nokogiri::XML(response)
@@ -15,7 +17,7 @@ module Epp
       end
       
       def items
-        @response.css('fred|resultsList fred|item', 'domain' => XML_NS_DOMAIN).collect{ |item| item.text }
+        @response.css('fred|resultsList fred|item', 'fred' => XML_NS_FRED).collect{ |item| item.text }
       end
     end
     
