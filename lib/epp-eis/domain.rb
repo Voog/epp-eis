@@ -226,6 +226,7 @@ module Epp
                 xml.legalDocument Base64.encode64(legal_document), 'type' => legal_doc_type
               }
             }
+            xml.clTRID UUIDTools::UUID.timestamp_create.to_s
           }
         end
         
@@ -254,6 +255,7 @@ module Epp
                 xml.legalDocument Base64.encode64(legal_document), 'type' => legal_doc_type
               }
             }
+            xml.clTRID UUIDTools::UUID.timestamp_create.to_s
           }
         end
         
@@ -329,6 +331,7 @@ module Epp
                 xml.legalDocument Base64.encode64(legal_document), 'type' => legal_doc_type
               }
             }
+            xml.clTRID UUIDTools::UUID.timestamp_create.to_s
           }
         end
         
@@ -379,6 +382,7 @@ module Epp
                 xml.legalDocument Base64.encode64(legal_document), 'type' => legal_doc_type
               }
             }
+            xml.clTRID UUIDTools::UUID.timestamp_create.to_s
           }
         end
         
@@ -395,7 +399,7 @@ module Epp
         builder = build_epp_request do |xml|
           xml.command {
             xml.check {
-              xml.send('check', 'xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => 'http://www.nic.cz/xml/epp/domain-1.4.xsd') {
+              xml.check('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => 'http://www.nic.cz/xml/epp/domain-1.4.xsd') {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
                 domains.each do |domain|
                   xml.name domain
