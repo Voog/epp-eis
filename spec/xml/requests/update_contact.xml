@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<epp xmlns="urn:ietf:params:xml:ns:epp-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd">
+  <command>
+    <update>
+      <contact:update xmlns:contact="http://www.nic.cz/xml/epp/contact-1.6" xsi:schemaLocation="http://www.nic.cz/xml/epp/contact-1.6 contact-1.6.xsd">
+        <contact:id>CID:TEST:10</contact:id>
+        <contact:chg>
+          <contact:postalInfo>
+            <contact:addr>
+              <contact:street>Test Street New 2</contact:street>
+              <contact:city>New Test City</contact:city>
+              <contact:pc>12345</contact:pc>
+              <contact:cc>GB</contact:cc>
+            </contact:addr>
+          </contact:postalInfo>
+          <contact:voice>+372.5555555</contact:voice>
+          <contact:email>test@test.com</contact:email>
+          <contact:ident type="op">37812123456</contact:ident>
+        </contact:chg>
+      </contact:update>
+    </update>
+    <extension>
+      <eis:extdata xmlns:eis="urn:ee:eis:xml:epp:eis-1.0" xsi:schemaLocation="urn:ee:eis:xml:epp:eis-1.0 eis-1.0.xsd">
+        <eis:legalDocument type="ddoc">.... base64 encoded document ....</eis:legalDocument>
+      </eis:extdata>
+    </extension>
+    <clTRID>wgyn002#10-02-08at13:59:51</clTRID>
+  </command>
+</epp>

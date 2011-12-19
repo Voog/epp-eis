@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<epp xmlns="urn:ietf:params:xml:ns:epp-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd">
+  <response>
+    <result code="1000">
+      <msg>Command completed successfully</msg>
+    </result>
+  ￼ <resData>
+      <contact:creData xmlns:contact="http://www.nic.cz/xml/epp/contact-1.6" xsi:schemaLocation="http://www.nic.cz/xml/epp/contact-1.6 contact-1.6.xsd">
+        <contact:id>CID:TEST:10</contact:id>
+        <contact:crDate>2010-02-08T15:50:55+02:00</contact:crDate>
+      </contact:creData>
+    </resData>
+    <trID>
+      <clTRID>neka005#10-02-08at13:51:37</clTRID>
+      <svTRID>ccReg-0000000437</svTRID>
+    </trID>
+  </response>
+</epp>
