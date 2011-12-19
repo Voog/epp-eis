@@ -26,13 +26,6 @@ In Gemfile add it as a gem:
 
 Need to implement the following commands
 
-* check_nsset
-* create_nsset
-* delete_nsset
-* info_nsset
-* list_nssets
-* update_nsset
-* transfer_nsset
 * credit_info
 
 Commands that are nice to have, but not needed.

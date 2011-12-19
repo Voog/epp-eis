@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<epp xmlns="urn:ietf:params:xml:ns:epp-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:ietf:params:xml:ns:epp-1.0 epp-1.0.xsd">
+  <command>
+    <create>
+      <nsset:create xmlns:nsset="http://www.nic.cz/xml/epp/nsset-1.2" xsi:schemaLocation="http://www.nic.cz/xml/epp/nsset-1.2 nsset-1.2.xsd">
+        <nsset:id>NSSID:TEST:2</nsset:id>
+        <nsset:ns>
+          <nsset:name>test.com</nsset:name>
+          <nsset:addr>123.123.123.123</nsset:addr>
+        </nsset:ns>
+        <nsset:ns>
+          <nsset:name>ns2.test.com</nsset:name>
+          <nsset:addr>111.111.111.111</nsset:addr>
+        </nsset:ns>
+        <nsset:tech>test1</nsset:tech>
+      </nsset:create>
+    </create>
+    <clTRID>qspn006#10-02-08at14:28:04</clTRID>
+  </command>
+</epp>
