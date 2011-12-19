@@ -7,7 +7,7 @@ describe 'create_domain' do
   
   context 'when response is successful' do
     before(:each) do
-      @server.stub(:request).and_return(xml_mock('create_domain_1000.xml'))
+      @server.stub(:request).and_return(xml_mock('responses/domain/create_domain_1000.xml'))
       @response = @server.create_domain('testing.ee', 'name_server_set1', 'domain_registrator1', 'administrative_contact1', legal_mock('test.pdf'), 'pdf')
     end
     
@@ -32,7 +32,7 @@ describe 'delete_domain' do
   
   context 'when response is successful' do
     before(:each) do
-      @server.stub(:request).and_return(xml_mock('delete_domain_1000.xml'))
+      @server.stub(:request).and_return(xml_mock('responses/domain/delete_domain_1000.xml'))
       @response = @server.delete_domain('testing.ee', legal_mock('test.pdf'), 'pdf')
     end
     
@@ -53,7 +53,7 @@ describe 'info_domain' do
   
   context 'when response is successful' do
     before(:each) do
-      @server.stub(:request).and_return(xml_mock('info_domain_1000.xml'))
+      @server.stub(:request).and_return(xml_mock('responses/domain/info_domain_1000.xml'))
       @response = @server.info_domain('testing.ee')
     end
     
@@ -110,7 +110,7 @@ describe 'renew_domain' do
   
   context 'when response is successful' do
     before(:each) do
-      @server.stub(:request).and_return(xml_mock('renew_domain_1000.xml'))
+      @server.stub(:request).and_return(xml_mock('responses/domain/renew_domain_1000.xml'))
     end
     
     it 'returns domain name' do
@@ -130,7 +130,7 @@ describe 'transfer_domain' do
   
   context 'when response is successful' do
     before(:each) do
-      @server.stub(:request).and_return(xml_mock('responses/transfer_domain_1000.xml'))
+      @server.stub(:request).and_return(xml_mock('responses/domain/transfer_domain_1000.xml'))
       @response = @server.transfer_domain('teinetest.ee', 'r3aVYGOz', legal_mock('test.pdf'), 'pdf')
     end
     
@@ -151,7 +151,7 @@ describe 'update_domain' do
   
   context 'when response is successful' do
     before(:each) do
-      @server.stub(:request).and_return(xml_mock('responses/update_domain_1000.xml'))
+      @server.stub(:request).and_return(xml_mock('responses/domain/update_domain_1000.xml'))
       @response = @server.update_domain('testimine.ee', nil, nil, nil, nil, nil, legal_mock('test.pdf'), 'pdf')
     end
     
@@ -174,7 +174,7 @@ describe 'check_domain' do
   context 'when response is successful' do
     
     before(:each) do
-      @server.stub(:request).and_return(xml_mock('check_domain_1000.xml'))
+      @server.stub(:request).and_return(xml_mock('responses/domain/check_domain_1000.xml'))
     end
     
     it 'has status code 1000' do
@@ -197,7 +197,7 @@ describe 'is_domain_available?' do
   
   context 'when domain is available' do
     before(:each) do
-      @server.stub(:request).and_return(xml_mock('check_domain_available_1000.xml'))
+      @server.stub(:request).and_return(xml_mock('responses/domain/check_domain_available_1000.xml'))
     end
     
     it 'returns true' do
@@ -207,7 +207,7 @@ describe 'is_domain_available?' do
   
   context 'when domain is not available' do
     before(:each) do
-      @server.stub(:request).and_return(xml_mock('check_domain_taken_1000.xml'))
+      @server.stub(:request).and_return(xml_mock('responses/domain/check_domain_taken_1000.xml'))
     end
     
     it 'returns false' do
