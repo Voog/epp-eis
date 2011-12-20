@@ -3,6 +3,8 @@ module Epp
     
     XML_NS_CONTACT = 'http://www.nic.cz/xml/epp/contact-1.6'
     
+    XML_SCHEMALOC = 'http://www.nic.cz/xml/epp/contact-1.6 contact-1.6.xsd'
+    
     class ContactCheck
       attr_accessor :name, :available, :reason
 
@@ -149,7 +151,7 @@ module Epp
         builder = build_epp_request do |xml|
           xml.command {
             xml.check {
-              xml.check('xmlns:contact' => XML_NS_CONTACT, 'xsi:schemaLocation' => 'http://www.nic.cz/xml/epp/contact-1.6 contact-1.6.xsd') {
+              xml.check('xmlns:contact' => XML_NS_CONTACT, 'xsi:schemaLocation' => XML_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
                 contacts.each { |contact| xml.id_ contact }
               }
@@ -166,7 +168,7 @@ module Epp
         builder = build_epp_request do |xml|
           xml.command {
             xml.create {
-              xml.create('xmlns:contact' => XML_NS_CONTACT, 'xsi:schemaLocation' => 'http://www.nic.cz/xml/epp/contact-1.6 contact-1.6.xsd') {
+              xml.create('xmlns:contact' => XML_NS_CONTACT, 'xsi:schemaLocation' => XML_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
                 xml.id_ contact
                 xml.postalInfo {
@@ -196,7 +198,7 @@ module Epp
         builder = build_epp_request do |xml|
           xml.command {
             xml.delete {
-              xml.delete('xmlns:contact' => XML_NS_CONTACT, 'xsi:schemaLocation' => 'http://www.nic.cz/xml/epp/contact-1.6 contact-1.6.xsd') {
+              xml.delete('xmlns:contact' => XML_NS_CONTACT, 'xsi:schemaLocation' => XML_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
                 xml.id_ contact
               }
@@ -213,7 +215,7 @@ module Epp
         builder = build_epp_request do |xml|
           xml.command {
             xml.info {
-              xml.info('xmlns:contact' => XML_NS_CONTACT, 'xsi:schemaLocation' => 'http://www.nic.cz/xml/epp/contact-1.6 contact-1.6.xsd') {
+              xml.info('xmlns:contact' => XML_NS_CONTACT, 'xsi:schemaLocation' => XML_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
                 xml.id_ contact
               }
@@ -234,7 +236,7 @@ module Epp
         builder = build_epp_request do |xml|
           xml.command {
             xml.update {
-              xml.update('xmlns:contact' => XML_NS_CONTACT, 'xsi:schemaLocation' => 'http://www.nic.cz/xml/epp/contact-1.6 contact-1.6.xsd') {
+              xml.update('xmlns:contact' => XML_NS_CONTACT, 'xsi:schemaLocation' => XML_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
                 xml.id_ contact
                 if [name, street, city, postal_code, country_code].any?{ |item| !item.nil? }
@@ -255,12 +257,7 @@ module Epp
                 xml.ident ident, 'type' => ident_type
               }
             }
-            xml.extension {
-              xml.extdata('xmlns:eis' => 'urn:ee:eis:xml:epp:eis-1.0', 'xsi:schemaLocation' => 'urn:ee:eis:xml:epp:eis-1.0 eis-1.0.xsd') {
-                xml.parent.namespace = xml.parent.namespace_definitions.first
-                xml.legalDocument Base64.encode64(legal_document), 'type' => legal_doc_type
-              }
-            }
+            add_legal_document(xml, legal_document, legal_doc_type)
             xml.clTRID UUIDTools::UUID.timestamp_create.to_s
           }
         end

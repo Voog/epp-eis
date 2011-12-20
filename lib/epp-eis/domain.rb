@@ -1,9 +1,9 @@
-require 'base64'
-
 module Epp
   module Eis
     
     XML_NS_DOMAIN = 'http://www.nic.cz/xml/epp/domain-1.4'
+    
+    XML_SCHEMALOC = 'http://www.nic.cz/xml/epp/domain-1.4.xsd domain-1.4.xsd'
 
     class DomainCreateResponse
       def initialize(response)
@@ -211,7 +211,7 @@ module Epp
         builder = build_epp_request do |xml|
           xml.command {
             xml.create {
-              xml.create('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => 'http://www.nic.cz/xml/epp/domain-1.4.xsd domain-1.4.xsd') {
+              xml.create('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => XML_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
                 xml.name domain
                 xml.period '1', 'unit' => 'y'
@@ -220,12 +220,7 @@ module Epp
                 [admins].flatten.each { |admin| xml.admin admin }
               }
             }
-            xml.extension {
-              xml.extdata('xmlns:eis' => 'urn:ee:eis:xml:epp:eis-1.0', 'xsi:schemaLocation' => 'urn:ee:eis:xml:epp:eis-1.0 eis-1.0.xsd') {
-                xml.parent.namespace = xml.parent.namespace_definitions.first
-                xml.legalDocument Base64.encode64(legal_document), 'type' => legal_doc_type
-              }
-            }
+            add_legal_document(xml, legal_document, legal_doc_type)
             xml.clTRID UUIDTools::UUID.timestamp_create.to_s
           }
         end
@@ -244,17 +239,12 @@ module Epp
         builder = build_epp_request do |xml|
           xml.command {
             xml.delete {
-              xml.delete('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => 'http://www.nic.cz/xml/epp/domain-1.4.xsd domain-1.4.xsd') {
+              xml.delete('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => XML_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
                 xml.name domain
               }
             }
-            xml.extension {
-              xml.extdata('xmlns:eis' => 'urn:ee:eis:xml:epp:eis-1.0', 'xsi:schemaLocation' => 'urn:ee:eis:xml:epp:eis-1.0 eis-1.0.xsd') {
-                xml.parent.namespace = xml.parent.namespace_definitions.first
-                xml.legalDocument Base64.encode64(legal_document), 'type' => legal_doc_type
-              }
-            }
+            add_legal_document(xml, legal_document, legal_doc_type)
             xml.clTRID UUIDTools::UUID.timestamp_create.to_s
           }
         end
@@ -273,7 +263,7 @@ module Epp
         builder = build_epp_request do |xml|
           xml.command {
             xml.info {
-              xml.info('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => 'http://www.nic.cz/xml/epp/domain-1.4.xsd') {
+              xml.info('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => XML_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
                 xml.name domain
               }
@@ -295,7 +285,7 @@ module Epp
         builder = build_epp_request do |xml|
           xml.command {
             xml.renew {
-              xml.renew('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => 'http://www.nic.cz/xml/epp/domain-1.4.xsd') {
+              xml.renew('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => XML_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
                 xml.name domain
                 xml.curExpDate current_expire_date
@@ -319,18 +309,13 @@ module Epp
         builder = build_epp_request do |xml|
           xml.command {
             xml.transfer('op' => 'request') {
-              xml.transfer('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => 'http://www.nic.cz/xml/epp/domain-1.4.xsd') {
+              xml.transfer('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => XML_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
                 xml.name domain
                 xml.authInfo auth_info
               }
             }
-            xml.extension {
-              xml.extdata('xmlns:eis' => 'urn:ee:eis:xml:epp:eis-1.0', 'xsi:schemaLocation' => 'urn:ee:eis:xml:epp:eis-1.0 eis-1.0.xsd') {
-                xml.parent.namespace = xml.parent.namespace_definitions.first
-                xml.legalDocument Base64.encode64(legal_document), 'type' => legal_doc_type
-              }
-            }
+            add_legal_document(xml, legal_document, legal_doc_type)
             xml.clTRID UUIDTools::UUID.timestamp_create.to_s
           }
         end
@@ -354,7 +339,7 @@ module Epp
         builder = build_epp_request do |xml|
           xml.command {
             xml.update {
-              xml.update('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => 'http://www.nic.cz/xml/epp/domain-1.4.xsd') {
+              xml.update('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => XML_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
                 xml.name domain
                 if !add_admins.nil? && !add_admins.empty?
@@ -376,12 +361,7 @@ module Epp
                 end
               }
             }
-            xml.extension {
-              xml.extdata('xmlns:eis' => 'urn:ee:eis:xml:epp:eis-1.0', 'xsi:schemaLocation' => 'urn:ee:eis:xml:epp:eis-1.0 eis-1.0.xsd') {
-                xml.parent.namespace = xml.parent.namespace_definitions.first
-                xml.legalDocument Base64.encode64(legal_document), 'type' => legal_doc_type
-              }
-            }
+            add_legal_document(xml, legal_document, legal_doc_type)
             xml.clTRID UUIDTools::UUID.timestamp_create.to_s
           }
         end
@@ -400,7 +380,7 @@ module Epp
         builder = build_epp_request do |xml|
           xml.command {
             xml.check {
-              xml.check('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => 'http://www.nic.cz/xml/epp/domain-1.4.xsd') {
+              xml.check('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => XML_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
                 domains.each do |domain|
                   xml.name domain
