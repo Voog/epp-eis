@@ -7,7 +7,7 @@ describe 'hello' do
   
   context 'when response is successful' do
     before(:each) do
-      @server.stub(:request).and_return(xml_mock('responses/hello.xml'))
+      @server.stub(:request).and_return(xml_mock('responses/session/hello.xml'))
       @response = @server.hello
     end
     
