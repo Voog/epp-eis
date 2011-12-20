@@ -158,7 +158,7 @@ module Epp
           }
         end
 
-        ContactCheckResponse.new(request(builder.to_xml))
+        ContactCheckResponse.new(send_request(builder.to_xml))
       end
       
       # Create a new contact object. The contact object will be available immediately.
@@ -187,7 +187,7 @@ module Epp
           }
         end
         
-        ContactCreateResponse.new(request(builder.to_xml))
+        ContactCreateResponse.new(send_request(builder.to_xml))
       end
       
       #￼Delete contact handle. Contact object can not be deleted if it has relations to other objects like domains or
@@ -205,7 +205,7 @@ module Epp
           }
         end
         
-        ContactDeleteResponse.new(request(builder.to_xml))
+        ContactDeleteResponse.new(send_request(builder.to_xml))
       end
       
       # Returns detailed information about a contact.
@@ -222,7 +222,7 @@ module Epp
           }
         end
         
-        ContactInfoResponse.new(request(builder.to_xml))
+        ContactInfoResponse.new(send_request(builder.to_xml))
       end
       
       def list_contacts
@@ -265,7 +265,7 @@ module Epp
           }
         end
         
-        ContactUpdateResponse.new(request(builder.to_xml))
+        ContactUpdateResponse.new(send_request(builder.to_xml))
       end
     end
   end

@@ -140,7 +140,7 @@ module Epp
           }
         end
 
-        NssetCheckResponse.new(request(builder.to_xml))
+        NssetCheckResponse.new(send_request(builder.to_xml))
       end
       
       # Create a new nameserver object
@@ -164,7 +164,7 @@ module Epp
           }
         end
         
-        NssetCreateResponse.new(request(builder.to_xml))
+        NssetCreateResponse.new(send_request(builder.to_xml))
       end
       
       # Delete nameserver object. Can only be deleted if object does not have relations to other objects.
@@ -181,7 +181,7 @@ module Epp
           }
         end
         
-        NssetDeleteResponse.new(request(builder.to_xml))
+        NssetDeleteResponse.new(send_request(builder.to_xml))
       end
       
       # Returns intormation about existing nameserver object.
@@ -198,7 +198,7 @@ module Epp
           }
         end
         
-        NssetInfoResponse.new(request(builder.to_xml))
+        NssetInfoResponse.new(send_request(builder.to_xml))
       end
       
       def list_nssets
@@ -237,7 +237,7 @@ module Epp
           }
         end
         
-        NssetUpdateResponse.new(request(builder.to_xml))
+        NssetUpdateResponse.new(send_request(builder.to_xml))
       end
     end
   end

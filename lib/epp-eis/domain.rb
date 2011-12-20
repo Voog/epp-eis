@@ -230,7 +230,7 @@ module Epp
           }
         end
         
-        DomainCreateResponse.new(request(builder.to_xml))
+        DomainCreateResponse.new(send_request(builder.to_xml))
       end
       
       # Delete domain.
@@ -259,7 +259,7 @@ module Epp
           }
         end
         
-        DomainDeleteResponse.new(request(builder.to_xml))
+        DomainDeleteResponse.new(send_request(builder.to_xml))
       end
       
       # Will return detailed information about the domain. The information will include domain password field. The field
@@ -282,7 +282,7 @@ module Epp
           }
         end
         
-        DomainInfoResponse.new(request(builder.to_xml))
+        DomainInfoResponse.new(send_request(builder.to_xml))
       end
       
       # Updates domain expiration period for another year.
@@ -306,7 +306,7 @@ module Epp
           }
         end
         
-        DomainRenewResponse.new(request(builder.to_xml))
+        DomainRenewResponse.new(send_request(builder.to_xml))
       end
       
       # Used to transfer domain ownership from one registrar to another.
@@ -335,7 +335,7 @@ module Epp
           }
         end
         
-        DomainTransferResponse.new(request(builder.to_xml))
+        DomainTransferResponse.new(send_request(builder.to_xml))
       end
       
       # Used to update domain information.
@@ -386,7 +386,7 @@ module Epp
           }
         end
         
-        DomainUpdateResponse.new(request(builder.to_xml))
+        DomainUpdateResponse.new(send_request(builder.to_xml))
       end
       
       def list_domains
@@ -411,7 +411,7 @@ module Epp
           }
         end
 
-        DomainCheckResponse.new(request(builder.to_xml))
+        DomainCheckResponse.new(send_request(builder.to_xml))
       end
       
       # Shortcut function to check whether domain is available.

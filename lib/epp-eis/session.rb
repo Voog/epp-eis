@@ -85,7 +85,7 @@ module Epp
           xml.hello
         end
         
-        HelloResponse.new(request(builder.to_xml))
+        HelloResponse.new(send_request(builder.to_xml))
       end
     end
   end

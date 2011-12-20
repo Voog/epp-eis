@@ -11,7 +11,7 @@ describe Epp::Eis::ContactCommands do
     context 'when response is successful' do
 
       before(:each) do
-        @server.stub(:request).and_return(xml_mock('responses/contact/check_contact_1000.xml'))
+        @server.stub(:send_request).and_return(xml_mock('responses/contact/check_contact_1000.xml'))
       end
 
       it 'has status code 1000' do
@@ -29,7 +29,7 @@ describe Epp::Eis::ContactCommands do
   describe 'create_contact' do
     context 'when response is successful' do
       before(:each) do
-        @server.stub(:request).and_return(xml_mock('responses/contact/create_contact_1000.xml'))
+        @server.stub(:send_request).and_return(xml_mock('responses/contact/create_contact_1000.xml'))
         @response = @server.create_contact('CID:TEST:10', 'Test', 'Test Street 11-2', 'Test City', '123456', 'EE', '+372.5555555', 'test@test.com', '37812124567', 'op')
       end
 
@@ -46,7 +46,7 @@ describe Epp::Eis::ContactCommands do
   describe 'info_contact' do
     context 'when response is successful' do
       before(:each) do
-        @server.stub(:request).and_return(xml_mock('responses/contact/info_contact_1000.xml'))
+        @server.stub(:send_request).and_return(xml_mock('responses/contact/info_contact_1000.xml'))
         @response = @server.info_contact('CID:TEST:1')
       end
       
@@ -91,7 +91,7 @@ describe Epp::Eis::ContactCommands do
   describe 'update_contact' do
     context 'when response is successful' do
       before(:each) do
-        @server.stub(:request).and_return(xml_mock('responses/contact/update_contact_1000.xml'))
+        @server.stub(:send_request).and_return(xml_mock('responses/contact/update_contact_1000.xml'))
         @response = @server.update_contact('CID:TEST:10', nil, nil, nil, nil, nil, nil, nil, nil, 'op', legal_mock('test.pdf'), 'pdf')
       end
 

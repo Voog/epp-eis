@@ -11,7 +11,7 @@ describe Epp::Eis::NssetCommands do
     context 'when response is successful' do
 
       before(:each) do
-        @server.stub(:request).and_return(xml_mock('responses/nsset/check_nsset_1000.xml'))
+        @server.stub(:send_request).and_return(xml_mock('responses/nsset/check_nsset_1000.xml'))
       end
 
       it 'has status code 1000' do
@@ -29,7 +29,7 @@ describe Epp::Eis::NssetCommands do
   describe 'create_nsset' do
     context 'when response is successful' do
       before(:each) do
-        @server.stub(:request).and_return(xml_mock('responses/nsset/create_nsset_1000.xml'))
+        @server.stub(:send_request).and_return(xml_mock('responses/nsset/create_nsset_1000.xml'))
         @response = @server.create_nsset('NSSID:TEST:2', [['test.com', '123.123.123.123'], ['ns2.test.com', '111.111.111.111']], 'test1')
       end
 
@@ -46,7 +46,7 @@ describe Epp::Eis::NssetCommands do
   describe 'info_nsset' do
     context 'when response is successful' do
       before(:each) do
-        @server.stub(:request).and_return(xml_mock('responses/nsset/info_nsset_1000.xml'))
+        @server.stub(:send_request).and_return(xml_mock('responses/nsset/info_nsset_1000.xml'))
         @response = @server.info_nsset('NSSID:TEST:2')
       end
       
@@ -71,7 +71,7 @@ describe Epp::Eis::NssetCommands do
   describe 'update_nsset' do
     context 'when response is successful' do
       before(:each) do
-        @server.stub(:request).and_return(xml_mock('responses/nsset/update_nsset_1000.xml'))
+        @server.stub(:send_request).and_return(xml_mock('responses/nsset/update_nsset_1000.xml'))
         @response = @server.update_nsset('NSSID:TEST:2', [['ns3.test.com', '112.112.112.112']], 'margustech1', 'ns2.test.com', 'tech1')
       end
 
