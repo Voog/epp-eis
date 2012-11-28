@@ -19,4 +19,4 @@ module Epp
   end
 end
 
-Epp::Server.send(:include, Epp::Eis::DomainCommands)
+Epp::Server.send(:include, Epp::Eis::EisExtensions)
