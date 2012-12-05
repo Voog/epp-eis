@@ -192,7 +192,7 @@ module Epp
         ContactCreateResponse.new(send_request(builder.to_xml))
       end
       
-      #￼Delete contact handle. Contact object can not be deleted if it has relations to other objects like domains or
+      # Delete contact handle. Contact object can not be deleted if it has relations to other objects like domains or
       # nssets.
       def delete_contact(contact)
         builder = build_epp_request do |xml|
@@ -257,7 +257,7 @@ module Epp
                 xml.ident ident, 'type' => ident_type
               }
             }
-            add_legal_document(xml, legal_document, legal_doc_type)
+            append_legal_document(xml, legal_document, legal_doc_type)
             xml.clTRID UUIDTools::UUID.timestamp_create.to_s
           }
         end

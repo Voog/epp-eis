@@ -220,7 +220,7 @@ module Epp
                 [admins].flatten.each { |admin| xml.admin admin }
               }
             }
-            add_legal_document(xml, legal_document, legal_doc_type)
+            append_legal_document(xml, legal_document, legal_doc_type)
             xml.clTRID UUIDTools::UUID.timestamp_create.to_s
           }
         end
@@ -244,7 +244,7 @@ module Epp
                 xml.name domain
               }
             }
-            add_legal_document(xml, legal_document, legal_doc_type)
+            append_legal_document(xml, legal_document, legal_doc_type)
             xml.clTRID UUIDTools::UUID.timestamp_create.to_s
           }
         end
@@ -315,7 +315,7 @@ module Epp
                 xml.authInfo auth_info
               }
             }
-            add_legal_document(xml, legal_document, legal_doc_type)
+            append_legal_document(xml, legal_document, legal_doc_type)
             xml.clTRID UUIDTools::UUID.timestamp_create.to_s
           }
         end
@@ -361,7 +361,7 @@ module Epp
                 end
               }
             }
-            add_legal_document(xml, legal_document, legal_doc_type)
+            append_legal_document(xml, legal_document, legal_doc_type)
             xml.clTRID UUIDTools::UUID.timestamp_create.to_s
           }
         end
