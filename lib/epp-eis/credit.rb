@@ -28,7 +28,13 @@ module Epp
       
       def credit_info
         builder = build_epp_request do |xml|
-          xml.credit_info
+          xml.extension {
+            xml.extcommand('xmlns:fred' => 'http://www.nic.cz/xml/epp/fred-1.4', 'xsi:schemaLocation' => 'http://www.nic.cz/xml/epp/fred-1.4 fred-1.4.xsd') {
+              xml.parent.namespace = xml.parent.namespace_definitions.first
+              xml.creditInfo
+              xml.clTRID UUIDTools::UUID.timestamp_create.to_s
+            }
+          }
         end
         
         CreditInfoResponse.new(send_request(builder.to_xml))
