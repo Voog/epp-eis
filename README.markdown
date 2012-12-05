@@ -24,10 +24,6 @@ In Gemfile add it as a gem:
     
 ## TODO
 
-Need to implement the following commands
-
-* credit_info
-
 Commands that are nice to have, but not needed.
 
 * check_keyset
