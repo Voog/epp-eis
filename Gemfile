@@ -1,5 +1,3 @@
 source 'http://rubygems.org'
 
 gemspec
-
-gem 'epp', :git => 'git://github.com/priithaamer/epp.git'
