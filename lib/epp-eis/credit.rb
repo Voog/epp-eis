@@ -1,8 +1,6 @@
 module Epp
   module Eis
     
-    XML_NS_FRED = 'http://www.nic.cz/xml/epp/fred-1.4'
-    
     class CreditInfoResponse
       def initialize(response)
         @response = Nokogiri::XML(response)

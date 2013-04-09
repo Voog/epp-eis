@@ -3,7 +3,7 @@ module Epp
     
     XML_NS_DOMAIN = 'http://www.nic.cz/xml/epp/domain-1.4'
     
-    XML_SCHEMALOC = 'http://www.nic.cz/xml/epp/domain-1.4.xsd domain-1.4.xsd'
+    XML_DOMAIN_SCHEMALOC = 'http://www.nic.cz/xml/epp/domain-1.4.xsd domain-1.4.xsd'
 
     class DomainCreateResponse
       def initialize(response)
@@ -211,7 +211,7 @@ module Epp
         builder = build_epp_request do |xml|
           xml.command {
             xml.create {
-              xml.create('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => XML_SCHEMALOC) {
+              xml.create('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => XML_DOMAIN_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
                 xml.name domain
                 xml.period '1', 'unit' => 'y'
@@ -239,7 +239,7 @@ module Epp
         builder = build_epp_request do |xml|
           xml.command {
             xml.delete {
-              xml.delete('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => XML_SCHEMALOC) {
+              xml.delete('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => XML_DOMAIN_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
                 xml.name domain
               }
@@ -263,7 +263,7 @@ module Epp
         builder = build_epp_request do |xml|
           xml.command {
             xml.info {
-              xml.info('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => XML_SCHEMALOC) {
+              xml.info('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => XML_DOMAIN_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
                 xml.name domain
               }
@@ -285,7 +285,7 @@ module Epp
         builder = build_epp_request do |xml|
           xml.command {
             xml.renew {
-              xml.renew('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => XML_SCHEMALOC) {
+              xml.renew('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => XML_DOMAIN_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
                 xml.name domain
                 xml.curExpDate current_expire_date
@@ -309,7 +309,7 @@ module Epp
         builder = build_epp_request do |xml|
           xml.command {
             xml.transfer('op' => 'request') {
-              xml.transfer('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => XML_SCHEMALOC) {
+              xml.transfer('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => XML_DOMAIN_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
                 xml.name domain
                 xml.authInfo auth_info
@@ -339,7 +339,7 @@ module Epp
         builder = build_epp_request do |xml|
           xml.command {
             xml.update {
-              xml.update('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => XML_SCHEMALOC) {
+              xml.update('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => XML_DOMAIN_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
                 xml.name domain
                 if !add_admins.nil? && !add_admins.empty?
@@ -380,7 +380,7 @@ module Epp
         builder = build_epp_request do |xml|
           xml.command {
             xml.check {
-              xml.check('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => XML_SCHEMALOC) {
+              xml.check('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => XML_DOMAIN_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
                 domains.each do |domain|
                   xml.name domain

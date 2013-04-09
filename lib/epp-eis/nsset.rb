@@ -3,7 +3,7 @@ module Epp
     
     XML_NS_NSSET = 'http://www.nic.cz/xml/epp/nsset-1.2'
     
-    XML_SCHEMALOC = 'http://www.nic.cz/xml/epp/nsset-1.2 nsset-1.2.xsd'
+    XML_NSSET_SCHEMALOC = 'http://www.nic.cz/xml/epp/nsset-1.2 nsset-1.2.xsd'
     
     class NssetCheck
       attr_accessor :name, :available
@@ -131,7 +131,7 @@ module Epp
         builder = build_epp_request do |xml|
           xml.command {
             xml.check {
-              xml.check('xmlns:nsset' => XML_NS_NSSET, 'xsi:schemaLocation' => XML_SCHEMALOC) {
+              xml.check('xmlns:nsset' => XML_NS_NSSET, 'xsi:schemaLocation' => XML_NSSET_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
                 nssets.each { |nsset| xml.id_ nsset }
               }
@@ -148,7 +148,7 @@ module Epp
         builder = build_epp_request do |xml|
           xml.command {
             xml.create {
-              xml.create('xmlns:nsset' => XML_NS_NSSET, 'xsi:schemaLocation' => XML_SCHEMALOC) {
+              xml.create('xmlns:nsset' => XML_NS_NSSET, 'xsi:schemaLocation' => XML_NSSET_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
                 xml.id_ nsset
                 nameservers.each do |nameserver|
@@ -172,7 +172,7 @@ module Epp
         builder = build_epp_request do |xml|
           xml.command {
             xml.delete {
-              xml.delete('xmlns:nsset' => XML_NS_NSSET, 'xsi:schemaLocation' => XML_SCHEMALOC) {
+              xml.delete('xmlns:nsset' => XML_NS_NSSET, 'xsi:schemaLocation' => XML_NSSET_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
                 xml.id_ nsset
               }
@@ -189,7 +189,7 @@ module Epp
         builder = build_epp_request do |xml|
           xml.command {
             xml.info {
-              xml.info('xmlns:nsset' => XML_NS_NSSET, 'xsi:schemaLocation' => XML_SCHEMALOC) {
+              xml.info('xmlns:nsset' => XML_NS_NSSET, 'xsi:schemaLocation' => XML_NSSET_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
                 xml.id_ nsset
               }
@@ -211,7 +211,7 @@ module Epp
         builder = build_epp_request do |xml|
           xml.command {
             xml.update {
-              xml.update('xmlns:nsset' => XML_NS_NSSET, 'xsi:schemaLocation' => XML_SCHEMALOC) {
+              xml.update('xmlns:nsset' => XML_NS_NSSET, 'xsi:schemaLocation' => XML_NSSET_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
                 xml.id_ nsset
                 if add_nameservers or add_contact

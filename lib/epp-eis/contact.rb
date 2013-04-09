@@ -3,7 +3,7 @@ module Epp
     
     XML_NS_CONTACT = 'http://www.nic.cz/xml/epp/contact-1.6'
     
-    XML_SCHEMALOC = 'http://www.nic.cz/xml/epp/contact-1.6 contact-1.6.xsd'
+    XML_CONTACT_SCHEMALOC = 'http://www.nic.cz/xml/epp/contact-1.6 contact-1.6.xsd'
     
     class ContactCheck
       attr_accessor :name, :available, :reason
@@ -151,7 +151,7 @@ module Epp
         builder = build_epp_request do |xml|
           xml.command {
             xml.check {
-              xml.check('xmlns:contact' => XML_NS_CONTACT, 'xsi:schemaLocation' => XML_SCHEMALOC) {
+              xml.check('xmlns:contact' => XML_NS_CONTACT, 'xsi:schemaLocation' => XML_CONTACT_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
                 contacts.each { |contact| xml.id_ contact }
               }
@@ -168,7 +168,7 @@ module Epp
         builder = build_epp_request do |xml|
           xml.command {
             xml.create {
-              xml.create('xmlns:contact' => XML_NS_CONTACT, 'xsi:schemaLocation' => XML_SCHEMALOC) {
+              xml.create('xmlns:contact' => XML_NS_CONTACT, 'xsi:schemaLocation' => XML_CONTACT_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
                 xml.id_ contact
                 xml.postalInfo {
@@ -198,7 +198,7 @@ module Epp
         builder = build_epp_request do |xml|
           xml.command {
             xml.delete {
-              xml.delete('xmlns:contact' => XML_NS_CONTACT, 'xsi:schemaLocation' => XML_SCHEMALOC) {
+              xml.delete('xmlns:contact' => XML_NS_CONTACT, 'xsi:schemaLocation' => XML_CONTACT_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
                 xml.id_ contact
               }
@@ -215,7 +215,7 @@ module Epp
         builder = build_epp_request do |xml|
           xml.command {
             xml.info {
-              xml.info('xmlns:contact' => XML_NS_CONTACT, 'xsi:schemaLocation' => XML_SCHEMALOC) {
+              xml.info('xmlns:contact' => XML_NS_CONTACT, 'xsi:schemaLocation' => XML_CONTACT_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
                 xml.id_ contact
               }
@@ -236,7 +236,7 @@ module Epp
         builder = build_epp_request do |xml|
           xml.command {
             xml.update {
-              xml.update('xmlns:contact' => XML_NS_CONTACT, 'xsi:schemaLocation' => XML_SCHEMALOC) {
+              xml.update('xmlns:contact' => XML_NS_CONTACT, 'xsi:schemaLocation' => XML_CONTACT_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
                 xml.id_ contact
                 if [name, street, city, postal_code, country_code].any?{ |item| !item.nil? }
