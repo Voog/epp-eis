@@ -213,11 +213,11 @@ module Epp
             xml.create {
               xml.create('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => XML_DOMAIN_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
-                xml.name domain
-                xml.period '1', 'unit' => 'y'
-                xml.nsset nsset
-                xml.registrant registrant
-                [admins].flatten.each { |admin| xml.admin admin }
+                xml['domain'].name domain
+                xml['domain'].period '1', 'unit' => 'y'
+                xml['domain'].nsset nsset
+                xml['domain'].registrant registrant
+                [admins].flatten.each { |admin| xml['domain'].admin admin }
               }
             }
             append_legal_document(xml, legal_document, legal_doc_type)
@@ -241,7 +241,7 @@ module Epp
             xml.delete {
               xml.delete('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => XML_DOMAIN_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
-                xml.name domain
+                xml['domain'].name domain
               }
             }
             append_legal_document(xml, legal_document, legal_doc_type)
@@ -265,7 +265,7 @@ module Epp
             xml.info {
               xml.info('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => XML_DOMAIN_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
-                xml.name domain
+                xml['domain'].name domain
               }
             }
             xml.clTRID UUIDTools::UUID.timestamp_create.to_s
@@ -287,9 +287,9 @@ module Epp
             xml.renew {
               xml.renew('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => XML_DOMAIN_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
-                xml.name domain
-                xml.curExpDate current_expire_date
-                xml.period '1', 'unit' => 'y'
+                xml['domain'].name domain
+                xml['domain'].curExpDate current_expire_date
+                xml['domain'].period '1', 'unit' => 'y'
               }
             }
             xml.clTRID UUIDTools::UUID.timestamp_create.to_s
@@ -311,8 +311,8 @@ module Epp
             xml.transfer('op' => 'request') {
               xml.transfer('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => XML_DOMAIN_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
-                xml.name domain
-                xml.authInfo auth_info
+                xml['domain'].name domain
+                xml['domain'].authInfo auth_info
               }
             }
             append_legal_document(xml, legal_document, legal_doc_type)
@@ -341,22 +341,22 @@ module Epp
             xml.update {
               xml.update('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => XML_DOMAIN_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
-                xml.name domain
+                xml['domain'].name domain
                 if !add_admins.nil? && !add_admins.empty?
-                  xml.add {
-                    add_admins.each { |add_admin| xml.admin add_admin }
+                  xml['domain'].add {
+                    add_admins.each { |add_admin| xml['domain'].admin add_admin }
                   }
                 end
                 if !rem_admins.nil? && !rem_admins.empty?
-                  xml.rem {
-                    rem_admins.each { |rem_admin| xml.admin rem_admin }
+                  xml['domain'].rem {
+                    rem_admins.each { |rem_admin| xml['domain'].admin rem_admin }
                   }
                 end
                 if [nsset, registrant, auth_info].any?{ |item| !item.nil? }
-                  xml.chg {
-                    xml.nsset nsset if nsset
-                    xml.registrant registrant if registrant
-                    xml.auth_info auth_info if auth_info
+                  xml['domain'].chg {
+                    xml['domain'].nsset nsset if nsset
+                    xml['domain'].registrant registrant if registrant
+                    xml['domain'].auth_info auth_info if auth_info
                   }
                 end
               }
@@ -383,14 +383,14 @@ module Epp
               xml.check('xmlns:domain' => XML_NS_DOMAIN, 'xsi:schemaLocation' => XML_DOMAIN_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
                 domains.each do |domain|
-                  xml.name domain
+                  xml['domain'].name domain
                 end
               }
             }
             xml.clTRID UUIDTools::UUID.timestamp_create.to_s
           }
         end
-
+        
         DomainCheckResponse.new(send_request(builder.to_xml))
       end
       

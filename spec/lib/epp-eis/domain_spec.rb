@@ -7,12 +7,41 @@ describe Epp::Eis::DomainCommands do
   end
 
   describe 'create_domain' do
-    context 'when response is successful' do
-      before(:each) do
-        @server.stub(:send_request).and_return(xml_mock('responses/domain/create_domain_1000.xml'))
-        @response = @server.create_domain('testing.ee', 'name_server_set1', 'domain_registrator1', 'administrative_contact1', legal_mock('test.pdf'), 'pdf')
+    before(:each) do
+      @server.should_receive(:send_request) do |xml|
+        @request = Nokogiri::XML(xml)
+        xml_mock('responses/domain/create_domain_1000.xml')
+      end
+      @response = @server.create_domain('testing.ee', 'name_server_set1', 'domain_registrator1', ['administrative_contact1', 'administrative_contact2'], legal_mock('test.pdf'), 'pdf')
+    end
+    
+    context 'request' do
+      it 'contains domain name' do
+        @request.css('domain|create domain|name', 'domain' => Epp::Eis::XML_NS_DOMAIN).text.should == 'testing.ee'
+      end
+
+      it 'contains registration period' do
+        @request.css('domain|create domain|period', 'domain' => Epp::Eis::XML_NS_DOMAIN).text.should == '1'
       end
       
+      it 'contains registration period unit' do
+        @request.css('domain|create domain|period', 'domain' => Epp::Eis::XML_NS_DOMAIN).first['unit'].should == 'y'
+      end
+      
+      it 'contains nsset' do
+        @request.css('domain|create domain|nsset', 'domain' => Epp::Eis::XML_NS_DOMAIN).text.should == 'name_server_set1'
+      end
+
+      it 'contains registrant' do
+        @request.css('domain|create domain|registrant', 'domain' => Epp::Eis::XML_NS_DOMAIN).text.should == 'domain_registrator1'
+      end
+
+      it 'contains administrative contacts' do
+        @request.css('domain|create domain|admin', 'domain' => Epp::Eis::XML_NS_DOMAIN).collect{ |n| n.text }.should include('administrative_contact1', 'administrative_contact2')
+      end
+    end
+    
+    context 'response' do
       it 'returns domain name' do
         @response.domain_name.should == 'testing.ee'
       end
