@@ -20,5 +20,5 @@ Gem::Specification.new do |s|
   
   s.add_runtime_dependency 'epp-nokogiri'
 
-  %w(rspec guard guard-rspec rb-fsevent).each { |d| s.add_development_dependency(d) }
+  %w(rake rspec guard guard-rspec rb-fsevent).each { |d| s.add_development_dependency(d) }
 end

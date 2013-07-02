@@ -153,7 +153,7 @@ module Epp
             xml.check {
               xml.check('xmlns:contact' => XML_NS_CONTACT, 'xsi:schemaLocation' => XML_CONTACT_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
-                contacts.each { |contact| xml.id_ contact }
+                contacts.each { |contact| xml['contact'].id_ contact }
               }
             }
             xml.clTRID UUIDTools::UUID.timestamp_create.to_s
@@ -170,19 +170,19 @@ module Epp
             xml.create {
               xml.create('xmlns:contact' => XML_NS_CONTACT, 'xsi:schemaLocation' => XML_CONTACT_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
-                xml.id_ contact
-                xml.postalInfo {
-                  xml.name name
-                  xml.addr {
-                    xml.street street
-                    xml.city city
-                    xml.pc postal_code
-                    xml.cc country_code
+                xml['contact'].id_ contact
+                xml['contact'].postalInfo {
+                  xml['contact'].name name
+                  xml['contact'].addr {
+                    xml['contact'].street street
+                    xml['contact'].city city
+                    xml['contact'].pc postal_code
+                    xml['contact'].cc country_code
                   }
                 }
-                xml.voice voice
-                xml.email email
-                xml.ident ident, 'type' => ident_type
+                xml['contact'].voice voice
+                xml['contact'].email email
+                xml['contact'].ident ident, 'type' => ident_type
               }
             }
             xml.clTRID UUIDTools::UUID.timestamp_create.to_s
@@ -200,7 +200,7 @@ module Epp
             xml.delete {
               xml.delete('xmlns:contact' => XML_NS_CONTACT, 'xsi:schemaLocation' => XML_CONTACT_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
-                xml.id_ contact
+                xml['contact'].id_ contact
               }
             }
             xml.clTRID UUIDTools::UUID.timestamp_create.to_s
@@ -217,7 +217,7 @@ module Epp
             xml.info {
               xml.info('xmlns:contact' => XML_NS_CONTACT, 'xsi:schemaLocation' => XML_CONTACT_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
-                xml.id_ contact
+                xml['contact'].id_ contact
               }
             }
             xml.clTRID UUIDTools::UUID.timestamp_create.to_s
@@ -238,23 +238,23 @@ module Epp
             xml.update {
               xml.update('xmlns:contact' => XML_NS_CONTACT, 'xsi:schemaLocation' => XML_CONTACT_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
-                xml.id_ contact
+                xml['contact'].id_ contact
                 if [name, street, city, postal_code, country_code].any?{ |item| !item.nil? }
-                  xml.postalInfo {
-                    xml.name name if name
+                  xml['contact'].postalInfo {
+                    xml['contact'].name name if name
                     if [street, city, postal_code, country_code].any?{ |item| !item.nil? }
-                      xml.addr {
-                        xml.street street if street
-                        xml.city city if city
-                        xml.pc postal_code if postal_code
-                        xml.cc country_code if country_code
+                      xml['contact'].addr {
+                        xml['contact'].street street if street
+                        xml['contact'].city city if city
+                        xml['contact'].pc postal_code if postal_code
+                        xml['contact'].cc country_code if country_code
                       }
                     end
                   }
                 end
-                xml.voice voice if voice
-                xml.email email if email
-                xml.ident ident, 'type' => ident_type
+                xml['contact'].voice voice if voice
+                xml['contact'].email email if email
+                xml['contact'].ident ident, 'type' => ident_type
               }
             }
             append_legal_document(xml, legal_document, legal_doc_type)

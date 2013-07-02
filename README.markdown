@@ -20,7 +20,9 @@ In Gemfile add it as a gem:
       :key => OpenSSL::PKey::RSA.new(File.open('priv_key.pem'))
     )
     
-    server.is_domain_available?('fraktal.ee') #=> false
+    server.command_session do
+      server.is_domain_available?('fraktal.ee') #=> false
+    end
     
 ## TODO
 
