@@ -133,7 +133,7 @@ module Epp
             xml.check {
               xml.check('xmlns:nsset' => XML_NS_NSSET, 'xsi:schemaLocation' => XML_NSSET_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
-                nssets.each { |nsset| xml.id_ nsset }
+                nssets.each { |nsset| xml['nsset'].id_ nsset }
               }
             }
             xml.clTRID UUIDTools::UUID.timestamp_create.to_s
@@ -150,14 +150,14 @@ module Epp
             xml.create {
               xml.create('xmlns:nsset' => XML_NS_NSSET, 'xsi:schemaLocation' => XML_NSSET_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
-                xml.id_ nsset
+                xml['nsset'].id_ nsset
                 nameservers.each do |nameserver|
-                  xml.ns {
-                    xml.name nameserver[0]
-                    xml.addr nameserver[1]
+                  xml['nsset'].ns {
+                    xml['nsset'].name nameserver[0]
+                    xml['nsset'].addr nameserver[1]
                   }
                 end
-                xml.tech contact
+                xml['nsset'].tech contact
               }
             }
             xml.clTRID UUIDTools::UUID.timestamp_create.to_s
@@ -174,7 +174,7 @@ module Epp
             xml.delete {
               xml.delete('xmlns:nsset' => XML_NS_NSSET, 'xsi:schemaLocation' => XML_NSSET_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
-                xml.id_ nsset
+                xml['nsset'].id_ nsset
               }
             }
             xml.clTRID UUIDTools::UUID.timestamp_create.to_s
@@ -191,7 +191,7 @@ module Epp
             xml.info {
               xml.info('xmlns:nsset' => XML_NS_NSSET, 'xsi:schemaLocation' => XML_NSSET_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
-                xml.id_ nsset
+                xml['nsset'].id_ nsset
               }
             }
             xml.clTRID UUIDTools::UUID.timestamp_create.to_s
@@ -213,22 +213,22 @@ module Epp
             xml.update {
               xml.update('xmlns:nsset' => XML_NS_NSSET, 'xsi:schemaLocation' => XML_NSSET_SCHEMALOC) {
                 xml.parent.namespace = xml.parent.namespace_definitions.first
-                xml.id_ nsset
+                xml['nsset'].id_ nsset
                 if add_nameservers or add_contact
-                  xml.add {
+                  xml['nsset'].add {
                     add_nameservers.each do |nameserver|
-                      xml.ns {
-                        xml.name nameserver[0]
-                        xml.addr nameserver[1]
+                      xml['nsset'].ns {
+                        xml['nsset'].name nameserver[0]
+                        xml['nsset'].addr nameserver[1]
                       }
                     end if add_nameservers
-                    xml.tech add_contact if add_contact
+                    xml['nsset'].tech add_contact if add_contact
                   }
                 end
                 if rem_nameserver or rem_contact
-                  xml.rem {
-                    xml.name rem_nameserver
-                    xml.tech rem_contact
+                  xml['nsset'].rem {
+                    xml['nsset'].name rem_nameserver
+                    xml['nsset'].tech rem_contact
                   }
                 end
               }
