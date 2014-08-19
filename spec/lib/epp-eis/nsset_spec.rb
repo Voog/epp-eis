@@ -3,12 +3,12 @@ require 'spec_helper'
 describe Epp::Eis::NssetCommands do
   
   before(:each) do
-    @server = Epp::Server.new(:server => '127.0.0.1', :tag => 'username', :password => 'password')
+    @server = Epp::Server.new(server: '127.0.0.1', tag: 'username', password: 'password')
   end
   
   describe 'check_nsset' do
     before(:each) do
-      @server.should_receive(:send_request) do |xml|
+      expect(@server).to receive(:send_request) do |xml|
         @request = Nokogiri::XML(xml)
         xml_mock('responses/nsset/check_nsset_1000.xml')
       end
@@ -36,7 +36,7 @@ describe Epp::Eis::NssetCommands do
   
   describe 'create_nsset' do
     before(:each) do
-      @server.should_receive(:send_request) do |xml|
+      expect(@server).to receive(:send_request) do |xml|
         @request = Nokogiri::XML(xml)
         xml_mock('responses/nsset/create_nsset_1000.xml')
       end
@@ -74,7 +74,7 @@ describe Epp::Eis::NssetCommands do
 
   describe 'info_nsset' do
     before(:each) do
-      @server.should_receive(:send_request) do |xml|
+      expect(@server).to receive(:send_request) do |xml|
         @request = Nokogiri::XML(xml)
         xml_mock('responses/nsset/info_nsset_1000.xml')
       end
@@ -108,7 +108,7 @@ describe Epp::Eis::NssetCommands do
   
   describe 'update_nsset' do
     before(:each) do
-      @server.should_receive(:send_request) do |xml|
+      expect(@server).to receive(:send_request) do |xml|
         @request = Nokogiri::XML(xml)
         xml_mock('responses/nsset/update_nsset_1000.xml')
       end

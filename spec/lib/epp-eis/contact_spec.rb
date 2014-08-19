@@ -3,12 +3,12 @@ require 'spec_helper'
 describe Epp::Eis::ContactCommands do
   
   before(:each) do
-    @server = Epp::Server.new(:server => '127.0.0.1', :tag => 'username', :password => 'password')
+    @server = Epp::Server.new(server: '127.0.0.1', tag: 'username', password: 'password')
   end
   
   describe 'check_contact' do
     before(:each) do
-      @server.should_receive(:send_request) do |xml|
+      expect(@server).to receive(:send_request) do |xml|
         @request = Nokogiri::XML(xml)
         xml_mock('responses/contact/check_contact_1000.xml')
       end
@@ -36,7 +36,7 @@ describe Epp::Eis::ContactCommands do
   
   describe 'create_contact' do
     before(:each) do
-      @server.should_receive(:send_request) do |xml|
+      expect(@server).to receive(:send_request) do |xml|
         @request = Nokogiri::XML(xml)
         xml_mock('responses/contact/create_contact_1000.xml')
       end
@@ -98,7 +98,7 @@ describe Epp::Eis::ContactCommands do
   
   describe 'info_contact' do
     before(:each) do
-      @server.should_receive(:send_request) do |xml|
+      expect(@server).to receive(:send_request) do |xml|
         @request = Nokogiri::XML(xml)
         xml_mock('responses/contact/info_contact_1000.xml')
       end
@@ -152,7 +152,7 @@ describe Epp::Eis::ContactCommands do
   
   describe 'update_contact' do
     before(:each) do
-      @server.should_receive(:send_request) do |xml|
+      expect(@server).to receive(:send_request) do |xml|
         @request = Nokogiri::XML(xml)
         xml_mock('responses/contact/update_contact_1000.xml')
       end

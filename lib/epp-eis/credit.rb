@@ -29,8 +29,8 @@ module Epp
           xml.extension {
             xml.extcommand('xmlns:fred' => 'http://www.nic.cz/xml/epp/fred-1.4', 'xsi:schemaLocation' => 'http://www.nic.cz/xml/epp/fred-1.4 fred-1.4.xsd') {
               xml.parent.namespace = xml.parent.namespace_definitions.first
-              xml.creditInfo
-              xml.clTRID UUIDTools::UUID.timestamp_create.to_s
+              xml['fred'].creditInfo
+              xml['fred'].clTRID UUIDTools::UUID.timestamp_create.to_s
             }
           }
         end
